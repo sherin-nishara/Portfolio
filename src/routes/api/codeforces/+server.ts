@@ -1,6 +1,8 @@
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 
+export const prerender = false;
+
 const HANDLE = 'sherinars2004';
 const CACHE_TTL_MS = 1000 * 60 * 60;
 let cache: { data: unknown; fetchedAt: number } | null = null;

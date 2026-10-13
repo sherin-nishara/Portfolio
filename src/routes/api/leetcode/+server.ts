@@ -1,6 +1,8 @@
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 
+export const prerender = false;
+
 const USERNAME = 'sherinars2004';
 const LEETCODE_GRAPHQL = 'https://leetcode.com/graphql';
 // Cache for 1 hour to respect LeetCode + stay "automatic" on each visit

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { asset, resolve } from '$app/paths';
 	import GithubLogo from 'phosphor-svelte/lib/GithubLogo';
 	import LinkedinLogo from 'phosphor-svelte/lib/LinkedinLogo';
 	import XLogo from 'phosphor-svelte/lib/XLogo';
@@ -120,25 +121,27 @@
 
 	onMount(() => {
 		// Live ranks for loading screen — fire all four in parallel, don't block the 2.2s timer
-		fetch('/api/leetcode')
+		// NOTE: /api/* needs a server, so these 404 on GitHub Pages (static).
+		// They fail silently and stats stay "....." — site still loads.
+		fetch(resolve('/api/leetcode'))
 			.then((r) => (r.ok ? r.json() : null))
 			.then((d) => {
 				if (d?.ranking) leetRank = d.ranking;
 			})
 			.catch(() => {});
-		fetch('/api/codeforces')
+		fetch(resolve('/api/codeforces'))
 			.then((r) => (r.ok ? r.json() : null))
 			.then((d) => {
 				if (typeof d?.rating === 'number') cfRating = d.rating;
 			})
 			.catch(() => {});
-		fetch('/api/codechef')
+		fetch(resolve('/api/codechef'))
 			.then((r) => (r.ok ? r.json() : null))
 			.then((d) => {
 				if (typeof d?.rating === 'number') ccRating = d.rating;
 			})
 			.catch(() => {});
-		fetch('/api/github')
+		fetch(resolve('/api/github'))
 			.then((r) => (r.ok ? r.json() : null))
 			.then((d) => {
 				if (typeof d?.commits === 'number') ghCommits = d.commits;
@@ -159,6 +162,7 @@
 {#if loading}
 	<main
 		class="flex min-h-[100svh] items-center justify-center bg-[#f7f7f7] px-4 text-[#535353]"
+		style="--dino-sprite: url({asset('dino/100-offline-sprite.png')})"
 	>
 		<div class="w-full max-w-xs sm:max-w-md" role="status" aria-live="polite">
 			<div class="flex justify-center">
@@ -232,7 +236,7 @@
 						{#if output === 'resume'}
 							<span class="flex shrink-0 items-center gap-1.5 font-sans">
 								<a
-									href="/resume.pdf"
+									href={asset('resume.pdf')}
 									target="_blank"
 									rel="noopener"
 									class="inline-flex items-center gap-1 rounded-full bg-green-400 px-3 py-1 text-[11px] font-semibold text-neutral-950 transition hover:bg-green-300"
@@ -240,7 +244,7 @@
 									<FileText size={12} aria-hidden="true" /> open
 								</a>
 								<a
-									href="/resume.pdf"
+									href={asset('resume.pdf')}
 									download
 									aria-label="Download resume"
 									title="Download resume"
@@ -286,7 +290,7 @@
 						>
 							{#if demoOk && p.demo}
 								<div class="absolute inset-0 hidden group-hover/card:block">
-									<img src={p.demo} alt="{p.name} demo" fetchpriority="high" onerror={() => (demoOk = false)} class="h-full w-full object-cover" />
+									<img src={p.demo.startsWith('/') ? asset(p.demo.slice(1)) : p.demo} alt="{p.name} demo" fetchpriority="high" onerror={() => (demoOk = false)} class="h-full w-full object-cover" />
 									<a
 										href={p.href}
 										target="_blank"
@@ -398,7 +402,7 @@
 		width: 46px;
 		height: 14px;
 		opacity: 0.35;
-		background-image: url('/dino/100-offline-sprite.png');
+		background-image: var(--dino-sprite);
 		background-position: -86px -2px;
 		background-repeat: no-repeat;
 		image-rendering: pixelated;
@@ -449,7 +453,7 @@
 		bottom: 30%;
 		width: 44px;
 		height: 47px;
-		background-image: url('/dino/100-offline-sprite.png');
+		background-image: var(--dino-sprite);
 		background-repeat: no-repeat;
 		image-rendering: pixelated;
 		animation:
@@ -460,7 +464,7 @@
 	.cactus {
 		position: absolute;
 		bottom: 30%;
-		background-image: url('/dino/100-offline-sprite.png');
+		background-image: var(--dino-sprite);
 		background-repeat: no-repeat;
 		image-rendering: pixelated;
 	}

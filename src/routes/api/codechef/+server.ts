@@ -1,6 +1,8 @@
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 
+export const prerender = false;
+
 const USER = 'sherinnishara';
 const CACHE_TTL_MS = 1000 * 60 * 60 * 6; // scrape is heavy — 6h
 let cache: { data: unknown; fetchedAt: number } | null = null;
