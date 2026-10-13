@@ -1,6 +1,6 @@
 # Sherin Nishara — Portfolio
 
-Live: **https://sherin-nishara.github.io/Portfolio/**
+Live: **https://sherin-nishara.github.io/cv/**
 
 Personal portfolio built with SvelteKit. Single-page site with a dino-game loading screen, live coding-stats scoreboard, resume terminal, projects carousel, and contact links.
 
